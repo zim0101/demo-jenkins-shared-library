@@ -27,6 +27,7 @@ def call(Map config) {
                                             sh(script: "python3 --version")
                                             sh(script: "pip install .")
                                             sh(script: "pytest")
+                                            sh(script: "python3 --version")
                                         }
                                     }
                                 }
