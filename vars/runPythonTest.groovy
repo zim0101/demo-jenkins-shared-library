@@ -7,6 +7,14 @@ def validateConfig(Map config) {
     }
 }
 
+def executeTestCommands(boolean checkVersion) {
+    if (checkVersion == true) {
+        sh(script: "python3 --version")
+    }
+    sh(script: "pip install .")
+    sh(script: "pytest")
+}
+
 def call(Map config) {
     validateConfig(config)
     Map defaults = [
@@ -27,11 +35,7 @@ def call(Map config) {
                                 for (def pythonVersion : pythonVersions) {
                                     docker.image(pythonVersion).inside {
                                         stage("test-on-${pythonVersion}") {
-                                            if (config.checkVersion == true) {
-                                                sh(script: "python3 --version")
-                                            }
-                                            sh(script: "pip install .")
-                                            sh(script: "pytest")
+                                            executeTestCommands(config.checkVersion)
                                         }
                                     }
                                 }
