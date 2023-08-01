@@ -1,6 +1,22 @@
-def runPipeline(Map config) {
+#!groovy
+
+def validateConfig(Map config) {
+    assert config.pipeline : 'pipeline must be set!'
+    if (config.pipeline != "PYTHON") {
+        error "Unsupported pipeline " + config.pipeline
+    }
+}
+
+def call(Map config) {
+    validateConfig(config)
+    Map defaults = [
+        checkVersion: true,
+        pythonVersions: ['ubuntu-python:3.10']
+    ]
+    config = defaults + config
+
     pipeline {
-        agent { label 'default' }
+        agent any
         stages {
             stage('tests') {
                 stages {
@@ -26,21 +42,4 @@ def runPipeline(Map config) {
             }
         }
     }
-}
-
-def validateConfig(Map config) {
-    assert config.pipeline : 'pipeline must be set!'
-    if (config.pipeline != "PYTHON") {
-        error "Unsupported pipeline " + config.pipeline
-    }
-}
-
-def call(Map config) {
-    validateConfig(config)
-    Map defaults = [
-        checkVersion: true,
-        pythonVersions: ['ubuntu-python:3.10']
-    ]
-    config = defaults + config
-    runPipeline(config)
 }
