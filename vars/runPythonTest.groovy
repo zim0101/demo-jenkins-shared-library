@@ -1,6 +1,6 @@
 def runPipeline(Map config) {
     pipeline {
-        agent none
+        agent { label 'default' }
         stages {
             stage('tests') {
                 stages {
