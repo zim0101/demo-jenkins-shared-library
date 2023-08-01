@@ -45,5 +45,10 @@ def call(Map config) {
                 }
             }
         }
+        post {
+            cleanup {
+                cleanWs()
+            }
+        }
     }
 }
