@@ -15,6 +15,16 @@ def executeTestCommands(boolean checkVersion) {
     sh(script: "pytest")
 }
 
+def testOnMultiplePythonImage(String pythonVersions) {
+    for (def pythonVersion : pythonVersions) {
+        docker.image(pythonVersion).inside {
+            stage("test-on-${pythonVersion}") {
+                executeTestCommands(config.checkVersion)
+            }
+        }
+    }
+}
+
 def call(Map config) {
     validateConfig(config)
     Map defaults = [
@@ -31,14 +41,7 @@ def call(Map config) {
                     stage('test-on-dynamic-docker-image') {
                         steps {
                             script {
-                                def pythonVersions = config.pythonVersions ?: defaults.pythonVersions
-                                for (def pythonVersion : pythonVersions) {
-                                    docker.image(pythonVersion).inside {
-                                        stage("test-on-${pythonVersion}") {
-                                            executeTestCommands(config.checkVersion)
-                                        }
-                                    }
-                                }
+                                testOnMultiplePythonImage(config.pythonVersions)
                             }
                         }
                     }
