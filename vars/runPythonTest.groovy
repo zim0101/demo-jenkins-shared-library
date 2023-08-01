@@ -7,8 +7,8 @@ def call(Map config) {
     }
 
     Map defaults = [
-        check_version: true,
-        python_versions: ['ubuntu-python:3.10', 'ubuntu-python:3.11.4']
+        checkVersion: true,
+        pythonVersions: ['ubuntu-python:3.10', 'ubuntu-python:3.11.4']
     ]
     config = defaults + config
 
@@ -20,14 +20,13 @@ def call(Map config) {
                     stage('test-on-dynamic-docker-image') {
                         steps {
                             script {
-                                def items = ['ubuntu-python:3.10', 'ubuntu-python:3.11.4']
-                                for (def item : items) {
-                                    docker.image(item).inside {
-                                        stage("Processing ${item}") {
+                                def pythonVersions = config.pythonVersions ?: defaults.pythonVersions
+                                for (def pythonVersion : pythonVersions) {
+                                    docker.image(pythonVersion).inside {
+                                        stage("test-on-${pythonVersion}") {
                                             sh(script: "python3 --version")
                                             sh(script: "pip install .")
                                             sh(script: "pytest")
-                                            sh(script: "python3 --version")
                                         }
                                     }
                                 }
