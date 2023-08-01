@@ -40,9 +40,7 @@ def call(Map config) {
                 stages {
                     stage('test-on-dynamic-docker-image') {
                         steps {
-                            script {
-                                testOnMultiplePythonImage(config.pythonVersions)
-                            }
+                            testOnMultiplePythonImage(config.pythonVersions)
                         }
                     }
                 }
