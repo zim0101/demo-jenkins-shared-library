@@ -22,7 +22,7 @@ def call(Map config) {
                         for (def pythonVersion : pythonVersions) {
                             docker.image(pythonVersion).inside {
                                 stage("test-on-${pythonVersion}") {
-                                    if (checkVersion == true) {
+                                    if (config.checkVersion == true) {
                                         sh(script: 'python3 --version')
                                     }
                                     sh(script: 'pip install .')
