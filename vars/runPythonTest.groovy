@@ -39,13 +39,10 @@ def call(Map config) {
                     script {
                         def pythonVersions = config.pythonVersions
                         for (def pythonVersion : pythonVersions) {
+                            def process = new com.zim0101.jenkins.pipeline.RunPytest()
                             docker.image(pythonVersion).inside {
                                 stage("test-on-${pythonVersion}") {
-                                    if (config.checkVersion == true) {
-                                        sh(script: 'python3 --version')
-                                    }
-                                    sh(script: 'pip install .')
-                                    sh(script: 'pytest')
+                                    process.execute(pythonVersion)
                                 }
                             }
                         }
