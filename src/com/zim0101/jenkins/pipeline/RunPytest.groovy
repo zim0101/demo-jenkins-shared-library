@@ -7,7 +7,10 @@ def execute(String pythonVersion) {
             sh """#!/usr/bin/env bash
                 set -ex
                 cd ${pythonVersion}
+                python3 -m venv .env
+                source .env/bin/activate
                 pip install .
+                cd ../
                 pytest
             """
         }
