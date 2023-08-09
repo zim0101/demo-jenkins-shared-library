@@ -6,6 +6,7 @@ def execute(String pythonVersion) {
         ansiColor('xterm') {
             sh """#!/usr/bin/env bash
                 set -ex
+                mkdir ${pythonVersion}
                 cd ${pythonVersion}
                 python3 -m venv .env
                 source .env/bin/activate
