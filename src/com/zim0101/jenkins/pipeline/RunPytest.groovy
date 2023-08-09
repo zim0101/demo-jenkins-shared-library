@@ -8,8 +8,8 @@ def execute(String pythonVersion) {
                 set -ex
                 mkdir ${pythonVersion}
                 cd ${pythonVersion}
-                python3 -m venv .env
-                source .env/bin/activate
+                python3 -m venv env
+                source env/bin/activate
                 pip install .
                 cd ../
                 pytest
